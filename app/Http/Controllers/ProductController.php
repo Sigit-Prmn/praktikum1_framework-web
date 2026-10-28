@@ -6,6 +6,8 @@ use App\Http\Requests\StoreProductRequest;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use App\Http\Requests\UpdateProductRequest;
+
 
 class ProductController extends Controller
 {
@@ -61,10 +63,21 @@ class ProductController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Product $product)
-    {
-        //
-    }
+    
+public function show(Product $product)
+{
+    $product->load(['transactionDetails.transaction']);
+ 
+    $totalTerjual = $product->transactionDetails->sum('qty');
+ 
+    $riwayat = $product->transactionDetails()
+        ->with('transaction')
+        ->latest()
+        ->take(10)
+        ->get();
+ 
+    return view('master-data.product.show', compact('product', 'totalTerjual', 'riwayat'));
+}
 
     /**
      * Show the form for editing the specified resource.

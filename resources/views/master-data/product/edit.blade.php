@@ -1,5 +1,4 @@
-
-<form action="{{ route('products.update', $product) }}" method="POST" class="space-y-4">
+    <form action="{{ route('products.update', $product) }}" method="POST" class="space-y-4">
     @csrf
     @method('PUT')
     <div>
